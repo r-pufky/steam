@@ -1,0 +1,49 @@
+#!/bin/bash
+# Startup script for steam dedicated server.
+# REMEMBER TO DROP Privileges for steam (su steam -c '').
+
+CUSTOM=/data/custom_server
+
+echo '--------------------------------------'
+echo 'Propagating steam user permissions ...'
+PUID=${PUID:-911}
+PGID=${PGID:-911}
+groupmod -o -g ${PGID} steam
+usermod -o -u ${PUID} steam
+mkdir -p ${SERVER_DIR}
+chown steam:steam -R /data ${SERVER_DIR}
+echo "PUID=$(id -u steam)"
+echo "PGID=$(id -g steam)"
+echo '--------------------------------------'
+
+if [ ${UPDATE_OS} -eq 1 ]; then
+  echo '--------------------------------------'
+  echo 'Updating image OS ...'
+  apt-get --quiet update && apt-get --quiet --yes upgrade
+  echo '--------------------------------------'
+fi
+if [ ${UPDATE_STEAM} -eq 1 ]; then
+  echo '--------------------------------------'
+  echo "Updating steamcmd for ${PLATFORM} ..."
+  su steam -c "${STEAM}/steamcmd.sh \
+    +@sSteamCmdForcePlatformType ${PLATFORM} \
+    +login anonymous \
+    +quit"
+  echo '--------------------------------------'
+fi
+if [ ${UPDATE_SERVER} -eq 1 ]; then
+  echo '--------------------------------------'
+  echo "Updating app ${STEAM_APP_ID} ..."
+  su steam -c "${STEAM}/steamcmd.sh \
+    +@sSteamCmdForcePlatformType ${PLATFORM} \
+    +login anonymous \
+    +force_install_dir ${SERVER_DIR} \
+    +app_update ${STEAM_APP_ID} \
+    +quit"
+  echo '--------------------------------------'
+fi
+
+echo '--------------------------------------'
+echo "Handing startup over to ${CUSTOM} ..."
+type ${CUSTOM} && ${CUSTOM}
+echo '--------------------------------------'
