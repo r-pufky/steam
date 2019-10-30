@@ -41,7 +41,7 @@ make any explicitly needed updates / changes / etc before launching the server.
 | PLATFORM      | Platform to force specify when auto updating. `linux` or `windows`.                      | `windows`      |
 | STEAM_APP_ID  | Steam application ID for auto updating.                                                  | `0`            |
 | UPDATE_OS     | Update core OS on startup. `1` enable, `0` disable.                                      | `1`            |
-| UPDATE_STEAM  | Update steamcmd on startup. `1` enable, `0` disable.                                     | `0`            |
+| UPDATE_STEAM  | Update steamcmd on startup. `1` enable, `0` disable.                                     | `1`            |
 | UPDATE_SERVER | Update dedicated server specified by `STEAM_APP_ID` on startup. `1` enable, `0` disable. | `1`            |
 | PUID          | User ID to run steamcmd under as well as mount permissions.                              | `1000`         |
 | PGID          | Group ID to run steamcmd under as well as mount permissions.                             | `1000`         |
@@ -57,7 +57,7 @@ See https://support.steampowered.com/kb_article.php?ref=8571-GLVN-8711 for a
 detailed list of steam ports.
 
 | Port  | Protocol | Required? | Description             |
-|-------|----------|-------------------------------------|
+|-------|----------|-----------|-------------------------|
 |`27015`| TCP      | Optional  | SRCDS RCON port.        |
 |`27015`| UDP      | Mandatory | Gameplay traffic.       |
 |`27016`| UDP      | Mandatory | Steam announce traffic. |
