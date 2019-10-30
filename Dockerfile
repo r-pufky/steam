@@ -51,7 +51,7 @@ RUN export LANG=en_US.UTF-8 && \
     useradd --create --home ${STEAM} steam && \
     su steam -c " \
       cd ${STEAM} && \
-		  steamcmd +quit" && \
+      steamcmd +quit" && \
     mkdir -p /data && \
     chown -R steam:steam ${STEAM} /data /docker && \
     chmod 0755 /docker/* && \
