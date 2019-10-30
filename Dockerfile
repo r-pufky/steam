@@ -1,4 +1,7 @@
-FROM debian:stretch-slim
+# steam dedicated server for docker.
+# https://developer.valvesoftware.com/wiki/SteamCMD#Linux.2FOS_X
+
+FROM ubuntu:latest
 
 ENV SERVER_DIR=/data/server \
     STEAM=/steam \
@@ -15,53 +18,46 @@ ENV SERVER_DIR=/data/server \
 
 COPY docker /docker
 
-RUN export DEBIAN_FRONTEND='noninteractive' && \
+RUN export LANG=en_US.UTF-8 && \
+    export LANGUAGE=en_US.UTF-8 && \
+    export LC_ALL=en_US.UTF-8 && \
+    export DEBIAN_FRONTEND=noninteractive && \
     export APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=true && \
     apt-get --quiet update && \
-    # Install base packages. Suppress locale error - always errors before setup.
-    apt-get install --yes --no-install-recommends --no-install-suggests 2> /dev/null \
-      wget \
+    # Set UTF-8 Locale
+    apt-get install --yes --install-recommends 2> /dev/null \
       locales \
-      ca-certificates \
-      gnupg \
       apt-utils && \
-    echo "\nLC_ALL=${LC_ALL}\nLANG=${LANG}" >> /etc/environment && \
     sed --in-place --expression='s/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
-    /usr/sbin/locale-gen && \
-    # Base system packages.
-    apt-get install --yes --no-install-recommends --no-install-suggests \
-      lib32stdc++6 \
+    /usr/sbin/locale-gen 2> /dev/null && \
+    dpkg-reconfigure --frontend=noninteractive locales && \
+    # Add wine
+    dpkg --add-architecture i386 && \
+    apt-get --quiet update && \
+    apt-get --quiet --yes upgrade && \
+    apt-get install --yes --install-recommends \
+      software-properties-common \
       lib32gcc1 \
-      software-properties-common && \
-    # Add wine repository (windows-based dedicated servers only) and install.
-    if [ "${PLATFORM}" = 'windows' ]; then \
-      dpkg --add-architecture i386 && \
-      wget -qO - 'https://dl.winehq.org/wine-builds/winehq.key' | apt-key add - && \
-      apt-add-repository 'deb http://dl.winehq.org/wine-builds/debian/ stretch main' && \
-      apt-get --quiet update && \
-      apt-get install -y --no-install-recommends --no-install-suggests \
-        wine \
-        wine32 \
-        wine64 \
-        libwine \
-        libwine:i386 \
-        fonts-wine \
-        wine-stable \
-        xauth \
-        xvfb \
-    ; fi && \
-    # Create steam user and install steam cmd.
+      wine-stable \
+      wine32 \
+      wine64 \
+      xvfb && \
+    # Auto-accept license and install steamcmd.
+    echo steam steam/license note '' | debconf-set-selections && \
+    echo steam steam/question select 'I AGREE' | debconf-set-selections && \
+    apt-get install --yes --install-recommends \
+      steamcmd && \
+    # Create steam user and setup permissions.
     useradd --create --home ${STEAM} steam && \
     su steam -c " \
       cd ${STEAM} && \
-      wget -qO - 'http://media.steampowered.com/installer/steamcmd_linux.tar.gz' | tar zxvf - && \
-		  ${STEAM}/steamcmd.sh +quit" && \
+		  steamcmd +quit" && \
     mkdir -p /data && \
     chown -R steam:steam ${STEAM} /data /docker && \
     chmod 0755 /docker/* && \
     apt-get clean autoclean && \
     apt-get autoremove --yes && \
-    rm -rfv /var/lib/{apt,dpkg,cache,log}
+    rm -rfv /var/lib/{apt,dpkg} /var/lib/{cache, log}
 
 WORKDIR /data
 

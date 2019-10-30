@@ -5,7 +5,7 @@ This provides a core installation of `steamcmd` to host dedicated servers. Both
 linux and windows servers can be hosted using this image.
 
 ## How it Runs
-The docker image contains a base debian install with wine (windows support) and
+The docker image contains a base ubuntu install with wine (windows support) and
 an up to date steamcmd utility installed.
 
 After start, OS, steamcmd and dedicated server are updated based on
@@ -19,6 +19,7 @@ make any explicitly needed updates / changes / etc before launching the server.
 * Ensure any files touched have permissions updated.
 * Drop to non-root user when launching server `su steam -c ''`.
 * Docker environment variables are avaliable to use.
+* `wine`, `win32` and `win64` are all avaliable to use.
 * A pre-made example script is included in the image. Execute the following to
   display the contents:
 
@@ -27,9 +28,9 @@ make any explicitly needed updates / changes / etc before launching the server.
 
 ## Version Tags
 
-| Tag    | Description                               |
-|--------|-------------------------------------------|
-| latest | Latest debian-slim image with steamcmd.sh |
+| Tag    | Description                                |
+|--------|--------------------------------------------|
+| latest | Latest ubuntu image with wine and steamcmd |
 
 ## Parameters
 
@@ -96,8 +97,13 @@ be given the container.
 ---
 version: "3"
 services:
-  digiKam:
+  steam:
     image: rpufky/steam:latest
+    restart: unless-stopped
+    ports:
+      - 27015:27015
+      - 27015:27015/udp
+      - 27016:27016/udp
     environment:
       - PUID=1000
       - PGID=1000
@@ -117,8 +123,13 @@ services:
 ---
 version: "3"
 services:
-  digiKam:
+  steam:
     image: rpufky/steam:latest
+    restart: unless-stopped
+    ports:
+      - 27015:27015
+      - 27015:27015/udp
+      - 27016:27016/udp
     environment:
       - PUID=1000
       - PGID=1000
@@ -132,8 +143,17 @@ services:
       - /my/docker/server/data:/data
       - /etc/localtime:/etc/localtime:ro
 
+## Building
+Both debian-slim and ubuntu images build within about 2-3MB of each other, so
+only the ubuntu base is used. build using included makefile:
+
+```
+sudo make steam
+```
+
 ## Failed to determine free disk space for ... error 75
-This happens because the underlying data store cannot be queried for a quota.
-Common with ZFS backed data stores. Eiher set a qouta or ignore it.
+This happens when steamcmd is downloading an app because the underlying data
+store cannot be queried for a quota. Common with ZFS backed data stores.
+Either set an explicit qouta or ignore it.
 
 `sudo zfs set quota=2T zpool1/docker`

@@ -25,7 +25,7 @@ fi
 if [ ${UPDATE_STEAM} -eq 1 ]; then
   echo '--------------------------------------'
   echo "Updating steamcmd for ${PLATFORM} ..."
-  su steam -c "${STEAM}/steamcmd.sh \
+  su steam -c "steamcmd \
     +@sSteamCmdForcePlatformType ${PLATFORM} \
     +login anonymous \
     +quit"
@@ -34,7 +34,7 @@ fi
 if [ ${UPDATE_SERVER} -eq 1 ]; then
   echo '--------------------------------------'
   echo "Updating app ${STEAM_APP_ID} ..."
-  su steam -c "${STEAM}/steamcmd.sh \
+  su steam -c "steamcmd \
     +@sSteamCmdForcePlatformType ${PLATFORM} \
     +login anonymous \
     +force_install_dir ${SERVER_DIR} \

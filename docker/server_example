@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Example server script.
+# Example server script. Do NOT run.
 # This runs as ROOT by default. Drop privileges.
 #
 # Do any additional server setup here. Perms are pre-setup for steam:steam
@@ -12,7 +12,7 @@
 # This will run wine (for windows servers) and launch the server.
 su steam -c  "xvfb-run \
   --auto-servernum \
-  wine ${SERVER_DIR}/ConanSandboxServer.exe -log -nosteam"
+  wine64 ${SERVER_DIR}/ConanSandboxServer.exe -log -nosteam"
 
 # This will launch a standard linux dedicated server.
 su steam -c "/data/server/startserver.sh \
