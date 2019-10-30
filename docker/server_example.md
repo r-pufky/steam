@@ -1,9 +1,3 @@
-# steam
-Generic Steam dedicated server using Docker.
-
-This provides a core installation of `steamcmd` to host dedicated servers. Both
-linux and windows servers can be hosted using this image.
-
 ## How it Runs
 The docker image contains a base ubuntu install with wine (windows support) and
 an up to date steamcmd utility installed.
@@ -18,12 +12,6 @@ After launching the container:
    * You must create this script in your `/data` directory and set it
      executable.
    * See [custom server](#custom-server) for documentation.
-
-## Version Tags
-
-| Tag    | Description                                |
-|--------|--------------------------------------------|
-| latest | Latest ubuntu image with wine and steamcmd |
 
 ## Parameters
 
@@ -61,87 +49,10 @@ detailed list of steam ports.
 |---------|--------------------------------------------|
 | /data   | User data location for images.             |
 
-## User/Group IDs
-When using data volumes (`-v` flags), permissions issues can occur between the
-host and the container.  For example, the user within the container may not
-exists on the host.  This could prevent the host from properly accessing files
-and folders on the shared volume.
-
-To avoid any problem, you can specify the user the application should run as.
-
-This is done by passing the user ID and group ID to the container via the
-`PUID` and `PGID` environment variables.
-
-To find the right IDs to use, issue the following command on the host, with the
-user owning the data volume on the host:
-
-    id <username>
-
-Which gives an output like this one:
-```
-uid=1000(myuser) gid=1000(myuser) groups=1000(myuser),4(adm),24(cdrom),27(sudo),46(plugdev),113(lpadmin)
-```
-
-The value of `uid` (user ID) and `gid` (group ID) are the ones that you should
-be given the container.
-
-### docker-compose (windows dedicated server)
-```
----
-version: "3"
-services:
-  steam:
-    image: rpufky/steam:latest
-    restart: unless-stopped
-    ports:
-      - 27015:27015
-      - 27015:27015/udp
-      - 27016:27016/udp
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - UPDATE_OS=1
-      - UPDATE_STEAM=1
-      - UPDATE_SERVER=1
-      - PLATFORM=windows
-      - STEAM_APP_ID=443030
-      - TZ=America/Los_Angeles
-    volumes:
-      - /my/docker/server/data:/data
-      - /etc/localtime:/etc/localtime:ro
-```
-
-### docker-compose (linux dedicated server)
-```
----
-version: "3"
-services:
-  steam:
-    image: rpufky/steam:latest
-    restart: unless-stopped
-    ports:
-      - 27015:27015
-      - 27015:27015/udp
-      - 27016:27016/udp
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - UPDATE_OS=1
-      - UPDATE_STEAM=1
-      - UPDATE_SERVER=1
-      - PLATFORM=linux
-      - STEAM_APP_ID=294420
-      - TZ=America/Los_Angeles
-    volumes:
-      - /my/docker/server/data:/data
-      - /etc/localtime:/etc/localtime:ro
-```
-
 ## Custom Server
 `/data/custom_server` is the script that will be called when the docker
 container is launched. This is under your control to allow you to setup the
-server however you wish. You **must create this script** and it **must** be
-executable.
+server however you wish. You **must create this script**.
 
 Dedicated server files are installed automatically to `${SERVER_DIR}`, and all
 docker environment variables are avaliable for use.
@@ -191,7 +102,7 @@ su steam -c "xvfb-run --auto-servernum \
 > to launch these servers. This is what `xvfb-run --auto-servernum` does.
 
 ## 0755 steam:steam `/data/custom_server`
-```bash
+``` bash
 #!/bin/bash
 #
 # Example server script. Do NOT run.
@@ -202,30 +113,13 @@ su steam -c "xvfb-run --auto-servernum \
 # available.
 
 
-# launch the dedicated Windows server under the steam user.
+# Launch the dedicated windows server under the steam user.
 # This will run wine (for windows servers) and launch the server.
 su steam -c  "xvfb-run \
   --auto-servernum \
   wine64 ${SERVER_DIR}/ConanSandboxServer.exe -log -nosteam"
 
-# launch the dedicated linux server under the steam user.
+# Launch the dedicated linux server under the steam user.
 su steam -c "/data/server/startserver.sh \
   -configfile=/data/server/serverconfig.xml"
-```
-
-## Building
-Both debian-slim and ubuntu images build within about 2-3MB of each other, so
-only the ubuntu base is used. build using included makefile:
-
-```
-sudo make steam
-```
-
-## Failed to determine free disk space for ... error 75
-This happens when steamcmd is downloading an app because the underlying data
-store cannot be queried for a quota. Common with ZFS backed data stores.
-Either set an explicit qouta or ignore it.
-
-```
-sudo zfs set quota=2T zpool1/docker
 ```
