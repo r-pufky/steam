@@ -142,6 +142,7 @@ services:
     volumes:
       - /my/docker/server/data:/data
       - /etc/localtime:/etc/localtime:ro
+```
 
 ## Building
 Both debian-slim and ubuntu images build within about 2-3MB of each other, so
@@ -156,4 +157,6 @@ This happens when steamcmd is downloading an app because the underlying data
 store cannot be queried for a quota. Common with ZFS backed data stores.
 Either set an explicit qouta or ignore it.
 
-`sudo zfs set quota=2T zpool1/docker`
+```
+sudo zfs set quota=2T zpool1/docker
+```
