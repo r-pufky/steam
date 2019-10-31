@@ -21,9 +21,10 @@ After launching the container:
 
 ## Version Tags
 
-| Tag    | Description                                |
-|--------|--------------------------------------------|
-| latest | Latest ubuntu image with wine and steamcmd |
+| Tag    | Description                                                            |
+|--------|------------------------------------------------------------------------|
+| latest | Latest ubuntu image with wine and steamcmd.                            |
+| winehq | Latest ubuntu image with latest wine packages (unstable) and steamcmd. |
 
 ## Parameters
 
@@ -142,6 +143,8 @@ services:
 container is launched. This is under your control to allow you to setup the
 server however you wish. You **must create this script** and it **must** be
 executable.
+
+[supervisor](supervisord.org) has been provided for service convenience.
 
 Dedicated server files are installed automatically to `${SERVER_DIR}`, and all
 docker environment variables are avaliable for use.

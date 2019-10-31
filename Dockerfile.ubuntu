@@ -41,6 +41,7 @@ RUN export LANG=en_US.UTF-8 && \
       wine-stable \
       wine32 \
       wine64 \
+      supervisor \
       xvfb && \
     # Auto-accept license and install steamcmd.
     echo steam steam/license note '' | debconf-set-selections && \
