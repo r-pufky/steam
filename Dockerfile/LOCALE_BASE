@@ -1,0 +1,11 @@
+    # Set UTF-8 Locale and base packages.
+    apt-get install --yes --install-recommends 2> /dev/null \
+      locales \
+      wget \
+      gnupg \
+      supervisor \
+      software-properties-common \
+      apt-utils && \
+    sed --in-place --expression='s/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
+    /usr/sbin/locale-gen 2> /dev/null && \
+    dpkg-reconfigure --frontend=noninteractive locales && \

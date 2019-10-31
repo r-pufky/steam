@@ -1,0 +1,26 @@
+# steam dedicated server for docker.
+# https://developer.valvesoftware.com/wiki/SteamCMD#Linux.2FOS_X
+
+FROM ubuntu:latest
+
+ENV SERVER_DIR=/data/server \
+    STEAM=/steam \
+    PLATFORM=windows \
+    STEAM_APP_ID=0 \
+    UPDATE_OS=1 \
+    UPDATE_STEAM=1 \
+    UPDATE_SERVER=1 \
+    PUID=1000 \
+    PGID=1000 \
+    LANG=en_US.UTF-8 \
+    LANGUAGE=en_US:en \
+    LC_ALL=en_US.UTF-8
+
+COPY docker /docker
+
+RUN export LANG=en_US.UTF-8 && \
+    export LANGUAGE=en_US.UTF-8 && \
+    export LC_ALL=en_US.UTF-8 && \
+    export DEBIAN_FRONTEND=noninteractive && \
+    export APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=true && \
+    apt-get --quiet update && \
