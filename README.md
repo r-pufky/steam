@@ -26,6 +26,19 @@ After launching the container:
 | latest | Latest ubuntu image with wine and steamcmd.                            |
 | winehq | Latest ubuntu image with latest wine packages (unstable) and steamcmd. |
 
+> **winehq** may potentially take 1-2 minutes on first boot to launch,
+> displaying the following message:
+>
+>   _"__wine_kernel_init boot event wait timed out"_
+>
+> Subsequent boots will not see the delay. Potenial fix is to run `winboot
+> --update`.
+>
+> This is a suspected issue with the GCC build toolchain, but has not been
+> resoled yet. See:
+>    https://ubuntuforums.org/archive/index.php/t-1499348.html
+>    https://bugs.winehq.org/show_bug.cgi?id=38653
+
 ## Parameters
 
 | Parameter     | Function                                                                                 | Default        |

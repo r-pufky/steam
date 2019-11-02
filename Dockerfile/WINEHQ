@@ -1,11 +1,11 @@
-    # Add wine
-    dpkg --add-architecture i386 && \
-    wget -qO - https://dl.winehq.org/wine-builds/winehq.key | apt-key add - && \
-    apt-add-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ bionic main' && \
-    apt-get --quiet update && \
-    apt-get --quiet --yes upgrade && \
-    apt-get install --yes --install-recommends \
-      lib32gcc1 \
-      winehq-stable \
-      supervisor \
-      xvfb && \
+# Add wine
+dpkg --add-architecture i386 && \
+wget -qO - https://dl.winehq.org/wine-builds/winehq.key | apt-key add - && \
+apt-add-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ bionic main' && \
+apt-get --quiet update && \
+apt-get --quiet --yes upgrade && \
+apt-get install --yes --install-recommends \
+  lib32gcc1 \
+  winehq-stable \
+  supervisor \
+  xvfb && \

@@ -1,0 +1,4 @@
+# Clean up target host system caches.
+apt-get clean autoclean && \
+apt-get autoremove --yes && \
+rm -rfv /var/lib/{apt,dpkg} /var/lib/{cache, log} /tmp/* /var/tmp/*

@@ -12,6 +12,7 @@ groupmod -o -g ${PGID} steam
 usermod -o -u ${PUID} steam
 mkdir -p ${SERVER_DIR}
 chown steam:steam -R /data ${SERVER_DIR}
+chmod 0700 /data/custom_server
 echo "PUID=$(id -u steam)"
 echo "PGID=$(id -g steam)"
 echo '--------------------------------------'

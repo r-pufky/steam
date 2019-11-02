@@ -13,10 +13,10 @@ ENV SERVER_DIR=/data/server \
     PUID=1000 \
     PGID=1000 \
     LANG=en_US.UTF-8 \
-    LANGUAGE=en_US:en \
+    LANGUAGE=en_US.UTF-8 \
     LC_ALL=en_US.UTF-8
 
-COPY docker /docker
+COPY source /docker
 
 RUN export LANG=en_US.UTF-8 && \
     export LANGUAGE=en_US.UTF-8 && \

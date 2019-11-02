@@ -1,11 +1,8 @@
-    # Create steam user and setup permissions.
-    useradd --create --home ${STEAM} steam && \
-    su steam -c " \
-      cd ${STEAM} && \
-      steamcmd +quit" && \
-    mkdir -p /data && \
-    chown -R steam:steam ${STEAM} /data /docker && \
-    chmod 0755 /docker/* && \
-    apt-get clean autoclean && \
-    apt-get autoremove --yes && \
-    rm -rfv /var/lib/{apt,dpkg} /var/lib/{cache, log}
+# Create steam user and setup permissions.
+useradd --create --home ${STEAM} steam && \
+su steam -c " \
+  cd ${STEAM} && \
+  steamcmd +quit" && \
+mkdir -p /data && \
+chown -R steam:steam ${STEAM} /data /docker && \
+chmod 0755 /docker/* && \
