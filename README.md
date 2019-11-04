@@ -349,4 +349,4 @@ and/or other countries.
 
 [3n]: https://github.com/alinmear/docker-conanexiles/blob/master/src/etc/supervisor/conf.d/conanexiles.conf
 [2k]: https://docs.docker.com/compose/compose-file/#stop_grace_period
-[f8]: https://raw.githubusercontent.com/r-pufky/steam/master/media/steam-icon-logo.png?sanitize=true
+[f8]: https://raw.githubusercontent.com/r-pufky/steam/master/media/steam-icon-logo.png
