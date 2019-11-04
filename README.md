@@ -26,20 +26,6 @@ After launching the container:
 | latest | Latest ubuntu image with wine and steamcmd.                            |
 | winehq | Latest ubuntu image with latest wine packages (unstable) and steamcmd. |
 
-> **winehq** may potentially take 1-2 minutes on first boot to launch,
-> displaying the following message:
->
->   _"0014:err:ole:get_local_server_stream Failed: 80004002"_
->   _"__wine_kernel_init boot event wait timed out"_
->
-> Subsequent boots will not see the delay. Potenial fix is to run `winboot
-> --update`.
->
-> This is a suspected issue with the GCC build toolchain, but has not been
-> resoled yet. See:
->    https://ubuntuforums.org/archive/index.php/t-1499348.html
->    https://bugs.winehq.org/show_bug.cgi?id=38653
-
 ## Parameters
 
 | Parameter     | Function                                                                                 | Default        |
@@ -158,7 +144,7 @@ container is launched. This is under your control to allow you to setup the
 server however you wish. You **must create this script** and it **must** be
 executable.
 
-[supervisor](supervisord.org) has been provided for service convenience.
+[supervisord](supervisord.org) has been provided for service convenience.
 
 Dedicated server files are installed automatically to `${SERVER_DIR}`, and all
 docker environment variables are avaliable for use.
@@ -201,7 +187,7 @@ su steam -c "xvfb-run --auto-servernum \
 > It is important to note that we must bring up a lightweight window manager
 > to launch these servers. This is what `xvfb-run --auto-servernum` does.
 
-### Dedicated Server with Saves / Saved States
+### Dedicated Server with **NO** Saves / Saved States
 For servers that don't require saving of state between reboots, a simple bash script will handle the server just fine:
 
 Windows
@@ -294,7 +280,7 @@ to:
 Then place all of your supervisord configuration files in `/data/supervisord` and ensure that the correct permissions are set. Supervisord will launch as **root**, and you should execute your server with `user=steam` to drop privileges for your processes.
 
 A [good supervisord example][3n] using a Conan Exiles server is
-[located here.][3n].
+[located here.][3n]
 
 Ensure that the docker container is given [more than 10 seconds][2k] for shutdown if needed:
 ```
@@ -329,11 +315,12 @@ Either set an explicit qouta or ignore it.
 sudo zfs set quota=2T zpool1/docker
 ```
 
-## Windows (wine) takes ~5 minutes to launch on first boot.
-Wine may block on boot events during the first boot. This is expressed by
-approximately a 5 minutes pause during these messages:
+## Windows (wine) takes ~5 minutes to launch on first boot
+Wine may block on boot events during the first boot. This is expressed by an
+approximate 5 minute pause during these messages:
 
 > _"0014:err:ole:get_local_server_stream Failed: 80004002"_
+>
 > _"__wine_kernel_init boot event wait timed out"_
 
 Subsequent boots will not see the delay. This should be mitigated in the
