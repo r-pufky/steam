@@ -3,6 +3,25 @@ useradd --create --home ${STEAM} steam && \
 su steam -c " \
   cd ${STEAM} && \
   steamcmd +quit" && \
+# winehq may potentially take ~5 minutes on first boot to launch, due to
+# blocking on boot events:
+#
+#  _"0014:err:ole:get_local_server_stream Failed: 80004002"_
+#  _"__wine_kernel_init boot event wait timed out"_
+#
+# Subsequent boots will not see the delay. We can mitigate this by updating wine
+# before our first use.
+#
+# wineboot --update
+# xvfb-run --autoservernum wineboot --update
+#
+# This is a suspected issue with the GCC build toolchain, but has not been
+# resolved yet. See:
+#    https://ubuntuforums.org/archive/index.php/t-1499348.html
+#    https://bugs.winehq.org/show_bug.cgi?id=38653
+echo 'Updating wine, ignore any errors ...' && \
+su steam -c 'wineboot --update' /dev/null 2>&1 && \
+echo 'Wine update completed.' && \
 mkdir -p /data && \
 chown -R steam:steam ${STEAM} /data /docker && \
 chmod 0755 /docker/* && \

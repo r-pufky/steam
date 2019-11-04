@@ -15,13 +15,11 @@ chown steam:steam -R /data ${SERVER_DIR}
 chmod 0700 /data/custom_server
 echo "PUID=$(id -u steam)"
 echo "PGID=$(id -g steam)"
-echo '--------------------------------------'
 
 if [ ${UPDATE_OS} -eq 1 ]; then
   echo '--------------------------------------'
   echo 'Updating image OS ...'
   apt-get --quiet update && apt-get --quiet --yes upgrade
-  echo '--------------------------------------'
 fi
 if [ ${UPDATE_STEAM} -eq 1 ]; then
   echo '--------------------------------------'
@@ -30,7 +28,6 @@ if [ ${UPDATE_STEAM} -eq 1 ]; then
     +@sSteamCmdForcePlatformType ${PLATFORM} \
     +login anonymous \
     +quit"
-  echo '--------------------------------------'
 fi
 if [ ${UPDATE_SERVER} -eq 1 ]; then
   echo '--------------------------------------'
@@ -41,10 +38,8 @@ if [ ${UPDATE_SERVER} -eq 1 ]; then
     +force_install_dir ${SERVER_DIR} \
     +app_update ${STEAM_APP_ID} \
     +quit"
-  echo '--------------------------------------'
 fi
 
 echo '--------------------------------------'
 echo "Handing startup over to ${CUSTOM} ..."
-type ${CUSTOM} && ${CUSTOM}
-echo '--------------------------------------'
+exec ${CUSTOM}

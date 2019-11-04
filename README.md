@@ -29,6 +29,7 @@ After launching the container:
 > **winehq** may potentially take 1-2 minutes on first boot to launch,
 > displaying the following message:
 >
+>   _"0014:err:ole:get_local_server_stream Failed: 80004002"_
 >   _"__wine_kernel_init boot event wait timed out"_
 >
 > Subsequent boots will not see the delay. Potenial fix is to run `winboot
@@ -177,12 +178,6 @@ su steam -c 'your server launch command'
 > Your specific launch command will vary based on what server you install.
 > Check dedicated server documentation for that game.
 
-Documentation can be found within the container itself using:
-
-```
-docker run -it --rm -a stdout --entrypoint cat rpufky/steam:latest /docker/server_example.md
-```
-
 ### Linux Example
 This will launch a linux dedicated server, assuming that the linux server is
 launched via a `startserver.sh` script in the install directory.
@@ -206,35 +201,123 @@ su steam -c "xvfb-run --auto-servernum \
 > It is important to note that we must bring up a lightweight window manager
 > to launch these servers. This is what `xvfb-run --auto-servernum` does.
 
-## 0755 steam:steam `/data/custom_server`
+### Dedicated Server with Saves / Saved States
+For servers that don't require saving of state between reboots, a simple bash script will handle the server just fine:
+
+Windows
 ```bash
-#!/bin/bash
-#
-# Example server script. Do NOT run.
-# This runs as ROOT by default. Drop privileges.
-#
-# Do any additional server setup here. Perms are pre-setup for steam:steam
-# unless you explicitly change anything. Docker environment variables are
-# available.
-
-
-# launch the dedicated Windows server under the steam user.
 # This will run wine (for windows servers) and launch the server.
 su steam -c  "xvfb-run \
   --auto-servernum \
   wine64 ${SERVER_DIR}/ConanSandboxServer.exe -log -nosteam"
+```
 
+Linux
+```bash
 # launch the dedicated linux server under the steam user.
 su steam -c "/data/server/startserver.sh \
   -configfile=/data/server/serverconfig.xml"
+```
+
+### Dedicated Server requiring Saves / Saved States (Bash)
+If the dedicated server requires specific saving of state on shutdown, bash can be used to manage the shutdown process. This works for simplier dedicated servers. More complex servers should consider the included supervisord process manager.
+
+Ensure that the docker container is given [more than 10 seconds][2k] for shutdown if needed:
+```
+services:
+  steam:
+    image: rpufky/steam:latest
+    restart: unless-stopped
+    stop_grace_period: 1m
+    ...
+```
+
+/data/custom_server:
+```bash
+#!/bin/bash
+#
+# Runs as Root. Drop privileges.
+#
+# Capture kill/term signals and send SIGINT to gracefully shutdown conan
+# server.
+PROCESS_WAIT_TIME=25
+WATCHDOG_TIME=300
+
+function shutdown() {
+  echo 'Shutting down server ...'
+  if [ "$(pgrep -n Conan)" != '' ]; then
+    echo "Sending SIGINT to Conan server (max ${PROCESS_WAIT_TIME} secs) ..."
+    kill -SIGINT `pgrep -n Conan`
+    sleep ${PROCESS_WAIT_TIME}
+  fi
+  if [ "$(pgrep wine)" != '' ]; then
+    echo "Sending SIGINT to wine processes (max ${PROCESS_WAIT_TIME} sec) ..."
+    kill -SIGINT `pgrep wine`
+    sleep ${PROCESS_WAIT_TIME}
+  fi
+  exit 0
+}
+trap shutdown SIGINT SIGKILL SIGTERM
+
+function start_server() {
+  su steam -c "xvfb-run \
+    --auto-servernum \
+    wine64 ${SERVER_DIR}/ConanSandbox/Binaries/Win64/ConanSandboxServer-Win64-Test.exe -log -nosteam"
+}
+
+function watch_server() {
+  if ps aux | grep [C]onanSandboxServer > /dev/null; then
+    echo 'Server is running ...'
+  else
+    echo 'Starting server ...'
+    start_server &
+  fi
+}
+
+while true; do
+  watch_server
+  # Using background with wait enables signal trap capture.
+  sleep ${WATCHDOG_TIME} &
+  wait
+done
+```
+
+### Dedicated Server requiring Saves / Saved States (Supervisord)
+[supervisor](supervisord.org) has been provided for service convenience. If you
+want to manage you server with a process manager just set `/data/custom_server`
+to:
+
+```bash
+/usr/bin/supervisord -c /etc/supervisor/supervisord.conf
+```
+
+Then place all of your supervisord configuration files in `/data/supervisord` and ensure that the correct permissions are set. Supervisord will launch as **root**, and you should execute your server with `user=steam` to drop privileges for your processes.
+
+A [good supervisord example][3n] using a Conan Exiles server is
+[located here.][3n].
+
+Ensure that the docker container is given [more than 10 seconds][2k] for shutdown if needed:
+```
+services:
+  steam:
+    image: rpufky/steam:latest
+    restart: unless-stopped
+    stop_grace_period: 1m
+    ...
 ```
 
 ## Building
 Both debian-slim and ubuntu images build within about 2-3MB of each other, so
 only the ubuntu base is used. build using included makefile:
 
-```
+Main steam image with ubuntu wine repository:
+```bash
 sudo make steam
+```
+
+Steam image using winehq repository:
+```bash
+sudo make winehq
 ```
 
 ## Failed to determine free disk space for ... error 75
@@ -245,3 +328,29 @@ Either set an explicit qouta or ignore it.
 ```
 sudo zfs set quota=2T zpool1/docker
 ```
+
+## Windows (wine) takes ~5 minutes to launch on first boot.
+Wine may block on boot events during the first boot. This is expressed by
+approximately a 5 minutes pause during these messages:
+
+> _"0014:err:ole:get_local_server_stream Failed: 80004002"_
+> _"__wine_kernel_init boot event wait timed out"_
+
+Subsequent boots will not see the delay. This should be mitigated in the
+container build already, but can manually be run with:
+
+```bash
+wineboot --update
+```
+
+```bash
+xvfb-run --autoservernum wineboot --update
+```
+
+This is a suspected issue with the GCC build toolchain, but has not been
+resolved yet. See:
+* https://ubuntuforums.org/archive/index.php/t-1499348.html
+* https://bugs.winehq.org/show_bug.cgi?id=38653
+
+[3n]: https://github.com/alinmear/docker-conanexiles/blob/master/src/etc/supervisor/conf.d/conanexiles.conf
+[2k]: https://docs.docker.com/compose/compose-file/#stop_grace_period
