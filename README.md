@@ -1,4 +1,4 @@
-# steam
+# [![steam][f8]®](https://developer.valvesoftware.com/wiki/SteamCMD) Steam (SteamCMD)
 Generic Steam dedicated server using Docker.
 
 This provides a core installation of `steamcmd` to host dedicated servers. Both
@@ -339,5 +339,11 @@ resolved yet. See:
 * https://ubuntuforums.org/archive/index.php/t-1499348.html
 * https://bugs.winehq.org/show_bug.cgi?id=38653
 
+## Licensing
+Steam Logo, SteamCMD ©2019 Valve Corporation. Steam and the Steam logo are
+trademarks and/or registered trademarks of Valve Corporation in the U.S.
+and/or other countries.
+
 [3n]: https://github.com/alinmear/docker-conanexiles/blob/master/src/etc/supervisor/conf.d/conanexiles.conf
 [2k]: https://docs.docker.com/compose/compose-file/#stop_grace_period
+[f8]: https://raw.githubusercontent.com/r-pufky/steam/master/media/steam-icon-logo.png?sanitize=true
