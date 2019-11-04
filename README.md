@@ -1,4 +1,7 @@
 # [![steam][f8]®](https://developer.valvesoftware.com/wiki/SteamCMD) Steam (SteamCMD)
+
+> This is **NOT** an official Valve steam docker container.
+
 Generic Steam dedicated server using Docker.
 
 This provides a core installation of `steamcmd` to host dedicated servers. Both
