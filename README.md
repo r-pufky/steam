@@ -181,9 +181,9 @@ All flavors of wine are installed (wind, wine32 and wine64). Check specific
 dedicated server documentation and forums for launching a dedicated windows
 server under wine for your game.
 
-```
+```bash
 su steam -c "xvfb-run --auto-servernum \
-  wine64 ${SERVER_DIR}/ConanSandboxServer.exe -log -nosteam"
+  wine64 ${SERVER_DIR}/ConanSandbox/Binaries/Win64/ConanSandboxServer-Win64-Test.exe -nosteamclient -game -server -log"
 ```
 * This example lauches a conan exiles dedicated server (443030).
 
@@ -196,9 +196,8 @@ For servers that don't require saving of state between reboots, a simple bash sc
 Windows
 ```bash
 # This will run wine (for windows servers) and launch the server.
-su steam -c  "xvfb-run \
-  --auto-servernum \
-  wine64 ${SERVER_DIR}/ConanSandboxServer.exe -log -nosteam"
+su steam -c "xvfb-run --auto-servernum \
+  wine64 ${SERVER_DIR}/ConanSandbox/Binaries/Win64/ConanSandboxServer-Win64-Test.exe -nosteamclient -game -server -log"
 ```
 
 Linux
@@ -249,9 +248,7 @@ function shutdown() {
 trap shutdown SIGINT SIGKILL SIGTERM
 
 function start_server() {
-  su steam -c "xvfb-run \
-    --auto-servernum \
-    wine64 ${SERVER_DIR}/ConanSandbox/Binaries/Win64/ConanSandboxServer-Win64-Test.exe -log -nosteam"
+  su steam -c "xvfb-run --auto-servernum wine64 ${SERVER_DIR}/ConanSandbox/Binaries/Win64/ConanSandboxServer-Win64-Test.exe -nosteamclient -game -server -log"
 }
 
 function watch_server() {
