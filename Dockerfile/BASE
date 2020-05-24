@@ -1,7 +1,7 @@
 # steam dedicated server for docker.
 # https://developer.valvesoftware.com/wiki/SteamCMD#Linux.2FOS_X
 
-FROM ubuntu:latest
+FROM ubuntu:18.04
 
 ENV SERVER_DIR=/data/server \
     STEAM=/steam \

@@ -24,10 +24,10 @@ After launching the container:
 
 ## Version Tags
 
-| Tag    | Description                                                            |
-|--------|------------------------------------------------------------------------|
-| latest | Latest ubuntu image with wine and steamcmd.                            |
-| winehq | Latest ubuntu image with latest wine packages (unstable) and steamcmd. |
+| Tag    | Description                                                                        |
+|--------|------------------------------------------------------------------------------------|
+| stable | Ubuntu 18.04 with wine and steamcmd from binary repo.                              |
+| latest | Ubuntu 18.04 with latest winehq stable packages and steamcmd. This **WILL** break. |
 
 ## Parameters
 
@@ -168,13 +168,12 @@ su steam -c 'your server launch command'
 > Check dedicated server documentation for that game.
 
 ### Linux Example
-This will launch a linux dedicated server, assuming that the linux server is
-launched via a `startserver.sh` script in the install directory.
+This will launch a **Left 4 Dead** ``srcsd_run`` linux dedicated server.
 
 ```
-su steam -c "/data/server/startserver.sh -configfile=/data/server/serverconfig.xml"
+su steam -c "/data/server/srcds_run -console -game left4dead -map l4d_hospital01_apartment -port 27015 +maxplayers 4 -nohltv +exec /data/server.cfg"
 ```
-* this example would launch a 7 days to die dedicated server (294420).
+* this example would launch a Left 4 Dead dedicated server (222840).
 
 ### Windows Example
 All flavors of wine are installed (wind, wine32 and wine64). Check specific

@@ -5,20 +5,20 @@ D_DIR       = Dockerfile
 help:
 	@echo 'USAGE:'
 	@echo
-	@echo 'make steam'
+	@echo 'make stable'
 	@echo '      Build latest steam dedicated docker container.'
 	@echo
-	@echo 'make winehq'
-	@echo '      Build latest steam dedicated docker with winehq repo container.'
+	@echo 'make latest'
+	@echo '      Build latest steam dedicated docker with latest winehq stable updates container.'
 	@echo
 	@echo 'make all'
 	@echo '      Build all latest containers.'
 
 .PHONY: help Makefile
 
-all: steam winehq
+all: stable latest
 
-steam: clean
+stable: clean
 	@echo 'Building steam ubuntu container ...'
 	@mkdir -p $(STAGING_DIR)
 	@cp ${D_DIR}/BASE ${STAGING_DIR}/Dockerfile
@@ -35,13 +35,13 @@ steam: clean
 	@cp -R source $(STAGING_DIR)
 	@cd $(STAGING_DIR) && \
 	 docker build \
-		-t rpufky/steam:latest \
+		-t rpufky/steam:stable \
 		.
 	@echo
-	@echo 'Remember to push to hub: docker push rpufky/steam:latest'
+	@echo 'Remember to push to hub: docker push rpufky/steam:stable'
 
-winehq: clean
-	@echo 'Building steam ubuntu container using winehq repo ...'
+latest: clean
+	@echo 'Building steam ubuntu container using wine stable latest from winehq repo ...'
 	@mkdir -p $(STAGING_DIR)
 	@cp ${D_DIR}/BASE ${STAGING_DIR}/Dockerfile
 	@cat ${D_DIR}/LOCALE_BASE >> ${STAGING_DIR}/Dockerfile
@@ -57,10 +57,10 @@ winehq: clean
 	@cp -R source $(STAGING_DIR)
 	@cd $(STAGING_DIR) && \
 	 docker build \
-		-t rpufky/steam:winehq \
+		-t rpufky/steam:latest -t rpufky/steam:winehq \
 		.
 	@echo
-	@echo 'Remember to push to hub: docker push rpufky/steam:winehq'
+	@echo 'Remember to push to hub: docker push rpufky/steam:latest'
 
 
 clean:

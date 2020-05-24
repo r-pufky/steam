@@ -1,4 +1,7 @@
 # Clean up target host system caches.
 apt-get clean autoclean && \
 apt-get autoremove --yes && \
-rm -rfv /var/lib/{apt,dpkg} /var/lib/{cache, log} /tmp/* /var/tmp/*
+rm -rfv /var/lib/{apt,dpkg} /var/lib/{cache,log} /tmp/* /var/tmp/* && \
+mkdir -p /var/lib/dpkg/{alternatives,info,parts,updates} && \
+touch /var/lib/dpkg/status && \
+echo -e 'amd64\ni386' > /var/lib/dpkg/arch
