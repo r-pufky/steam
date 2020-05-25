@@ -97,7 +97,7 @@ be given the container.
 
 
 ## Detailed Usage Instructions
-Details how to setup a new server from sratch. See Example Configurations above
+Details how to setup a new server from scratch. See [Example Configurations](#example-configurations)
 for working examples.
 
 ### docker-compose (windows dedicated server)

@@ -106,9 +106,9 @@ dc stop l4d
 ```
 
 ### Install metamod, sourcemod and restart server.
-[Download SourceMod Here](https://www.sourcemod.net/)
-[Download MetaMod Here](http://www.sourcemm.net/)
-[Download Custom metamod.vdf Here](https://www.metamodsource.net/vdf)
+* [Download SourceMod Here](https://www.sourcemod.net/)
+* [Download MetaMod Here](http://www.sourcemm.net/)
+* [Download Custom metamod.vdf Here](https://www.metamodsource.net/vdf)
 
 ``` bash
 cd /d/games/l4d/data/server/left4dead
