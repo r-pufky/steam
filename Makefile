@@ -1,5 +1,5 @@
 # Makefile for steam docker containers.
-STAGING_DIR = staging
+STAGING_DIR = /tmp/steam-staging
 D_DIR       = Dockerfile
 
 help:
