@@ -36,6 +36,14 @@ services:
       - /etc/localtime:/etc/localtime:ro
 ```
 
+### Start the server to download game files and stop it.
+``` bash
+dc up -d conan; dc logs -f
+dc stop conan
+```
+When the message `custom_server` not found appears, all games files have been
+downloaded.
+
 ### Create custom_server script.
 After receiving shutdown command, Conan Exiles takes a few seconds to write
 to the database before shutting down. This is handled by catching the signal
@@ -86,12 +94,6 @@ while true; do
   sleep ${WATCHDOG_TIME} &
   wait
 done
-```
-
-### Start the server to download game files and stop it.
-``` bash
-dc up -d conan; dc logs -f
-dc stop conan
 ```
 
 ### Add custom server configuration.

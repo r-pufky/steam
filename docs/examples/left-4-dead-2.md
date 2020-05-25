@@ -19,8 +19,8 @@ services:
       - '27015:27015'
       - '27015:27015/udp'
     environment:
-      - PUID=50510
-      - PGID=50510
+      - PUID=50520
+      - PGID=50520
       - UPDATE_OS=1
       - UPDATE_STEAM=1
       - UPDATE_SERVER=1
