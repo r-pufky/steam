@@ -57,14 +57,14 @@ Fully working examples of different dedicated servers.
 Default ports exposed by the container. Additional ports for servers can be
 exposed during docker configuration.
 
-See https://support.steampowered.com/kb_article.php?ref=8571-GLVN-8711 for a
-detailed list of steam ports.
+See [Required Ports for Steam](https://support.steampowered.com/kb_article.php?ref=8571-GLVN-8711)
+for a detailed list of steam ports.
 
 | Port  | Protocol | Required? | Description             |
 |-------|----------|-----------|-------------------------|
 |`27015`| TCP      | Optional  | SRCDS RCON port.        |
 |`27015`| UDP      | Mandatory | Gameplay traffic.       |
-|`27016`| UDP      | Mandatory | Steam announce traffic. |
+|`27016`| UDP      | Optional  | Steam announce traffic. |
 
 ## Volumes
 
