@@ -4,17 +4,7 @@ echo steam steam/question select 'I AGREE' | debconf-set-selections && \
 dpkg --add-architecture i386 && \
 apt-get --quiet update && \
 apt-get --quiet --yes upgrade && \
-# Ensure packages required by srcds_run installed to prevent 'cat: hlds.{PID}.pid: No such file or directory' errors.
-# See: https://forums.alliedmods.net/showthread.php?t=300118
 apt-get install --yes --install-recommends \
-  lib32z1 \
-  lib32gcc1 \
-  lib32ncurses5 \
-  libbz2-1.0 \
-  libbz2-1.0:i386 \
-  lib32stdc++6 \
-  libstdc++6:i386 \
-  libcurl4-gnutls-dev \
-  libcurl4-gnutls-dev:i386 && \
+  gdb && \
 apt-get install --yes --install-recommends \
   steamcmd && \
