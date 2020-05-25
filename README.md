@@ -25,7 +25,7 @@ After launching the container:
 ## Example Configurations
 Fully working examples of different dedicated servers.
 
-* [Left 4 Dead (w/ SourceMod,MetaMod)](https://github.com/r-pufky/steam/blob/master/docs/examples/left4-dead.md) Linux Server
+* [Left 4 Dead (w/ SourceMod,MetaMod)](https://github.com/r-pufky/steam/blob/master/docs/examples/left-4-dead.md) Linux Server
 * [Conan Exiles](https://github.com/r-pufky/steam/blob/master/docs/examples/conan-exiles.md) Windows Server
 
 ## Version Tags
