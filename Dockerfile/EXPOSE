@@ -1,4 +1,4 @@
 # For ports required by steam servcies, see:
 # https://support.steampowered.com/kb_article.php?ref=8571-GLVN-8711
 # Be sure to include any server-specific ports.
-EXPOSE 27015/tcp 27015/udp 27016/udp
+EXPOSE 27015/tcp 27015/udp
