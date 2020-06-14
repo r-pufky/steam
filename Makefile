@@ -48,7 +48,7 @@ latest: clean
 	@mkdir -p $(STAGING_DIR)
 	@cp ${D_DIR}/BASE ${STAGING_DIR}/Dockerfile
 	@cat ${D_DIR}/LOCALE_BASE >> ${STAGING_DIR}/Dockerfile
-	@cat ${D_DIR}/WINEHQ-STABLE >> ${STAGING_DIR}/Dockerfile
+	@cat ${D_DIR}/WINEHQ_STABLE >> ${STAGING_DIR}/Dockerfile
 	@cat ${D_DIR}/INSTALL_STEAM >> ${STAGING_DIR}/Dockerfile
 	@cat ${D_DIR}/STEAM_SERVICE >> ${STAGING_DIR}/Dockerfile
 	@cat ${D_DIR}/SUPERVISORD >> ${STAGING_DIR}/Dockerfile
@@ -70,7 +70,7 @@ experimental: clean
 	@mkdir -p $(STAGING_DIR)
 	@cp ${D_DIR}/BASE ${STAGING_DIR}/Dockerfile
 	@cat ${D_DIR}/LOCALE_BASE >> ${STAGING_DIR}/Dockerfile
-	@cat ${D_DIR}/WINEHQ-STAGING >> ${STAGING_DIR}/Dockerfile
+	@cat ${D_DIR}/WINEHQ_STAGING >> ${STAGING_DIR}/Dockerfile
 	@cat ${D_DIR}/INSTALL_STEAM >> ${STAGING_DIR}/Dockerfile
 	@cat ${D_DIR}/STEAM_SERVICE >> ${STAGING_DIR}/Dockerfile
 	@cat ${D_DIR}/SUPERVISORD >> ${STAGING_DIR}/Dockerfile

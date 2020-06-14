@@ -18,5 +18,6 @@ apt-get --quiet --yes upgrade && \
 apt-get install --yes --install-recommends \
   lib32gcc1 \
   winehq-staging \
+  winbind \
   supervisor \
   xvfb && \

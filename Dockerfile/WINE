@@ -7,4 +7,5 @@ apt-get install --yes --install-recommends \
   wine-stable \
   wine32 \
   wine64 \
+  winbind \
   xvfb && \
