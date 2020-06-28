@@ -304,6 +304,17 @@ services:
     ...
 ```
 
+## Winetricks
+[winetricks](https://wiki.winehq.org/Winetricks) is installed to
+`/usr/bin/winetricks` and may be used in `custom_server` to apply specific
+patches; remember to switch to the `steam` user when executing this commands.
+
+custom_server
+```bash
+su steam -c "winetricks dotnet472"
+su steam -c "winetricks vcrun2013"
+```
+
 ## Building
 Both debian-slim and ubuntu images build within about 2-3MB of each other, so
 only the ubuntu base is used. build using included makefile:
