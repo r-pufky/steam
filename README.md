@@ -39,20 +39,21 @@ Fully working examples of different dedicated servers.
 
 ## Parameters
 
-| Parameter     | Function                                                                                 | Default        |
-|---------------|------------------------------------------------------------------------------------------|----------------|
-| SERVER_DIR    | Location for server files.                                                               | `/data/server` |
-| STEAM         | Location of steamcmd client.                                                             |`/steam`        |
-| PLATFORM      | Platform to force specify when auto updating. `linux` or `windows`.                      | `windows`      |
-| STEAM_APP_ID  | Steam application ID for auto updating.                                                  | `0`            |
-| UPDATE_OS     | Update core OS on startup. `1` enable, `0` disable.                                      | `1`            |
-| UPDATE_STEAM  | Update steamcmd on startup. `1` enable, `0` disable.                                     | `1`            |
-| UPDATE_SERVER | Update dedicated server specified by `STEAM_APP_ID` on startup. `1` enable, `0` disable. | `1`            |
-| PUID          | User ID to run steamcmd under as well as mount permissions.                              | `1000`         |
-| PGID          | Group ID to run steamcmd under as well as mount permissions.                             | `1000`         |
-| LANG          | Language environment to use in containers.                                               | `en_US.UTF-8`  |
-| LANGUAGE      | Language environment to use in containers.                                               | `en_US:UTF-8`  |
-| LC_ALL        | Language environment to use in containers.                                               | `en_US.UTF-8`  |
+| Parameter        | Function                                                                                 | Default        |
+|------------------|------------------------------------------------------------------------------------------|----------------|
+| SERVER_DIR       | Location for server files.                                                               | `/data/server` |
+| STEAM            | Location of steamcmd client.                                                             |`/steam`        |
+| PLATFORM         | Platform to force specify when auto updating. `linux` or `windows`.                      | `windows`      |
+| STEAM_APP_ID     | Steam application ID for auto updating.                                                  | `0`            |
+| STEAM_APP_EXTRAS | Optional. Additional options for steam app update.                                       | ``             |
+| UPDATE_OS        | Update core OS on startup. `1` enable, `0` disable.                                      | `1`            |
+| UPDATE_STEAM     | Update steamcmd on startup. `1` enable, `0` disable.                                     | `1`            |
+| UPDATE_SERVER    | Update dedicated server specified by `STEAM_APP_ID` on startup. `1` enable, `0` disable. | `1`            |
+| PUID             | User ID to run steamcmd under as well as mount permissions.                              | `1000`         |
+| PGID             | Group ID to run steamcmd under as well as mount permissions.                             | `1000`         |
+| LANG             | Language environment to use in containers.                                               | `en_US.UTF-8`  |
+| LANGUAGE         | Language environment to use in containers.                                               | `en_US:UTF-8`  |
+| LC_ALL           | Language environment to use in containers.                                               | `en_US.UTF-8`  |
 
 ## Ports
 Default ports exposed by the container. Additional ports for servers can be

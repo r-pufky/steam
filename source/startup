@@ -4,6 +4,7 @@
 
 CUSTOM=/data/custom_server
 
+set -x -e
 echo '--------------------------------------'
 echo 'Propagating steam user permissions ...'
 PUID=${PUID:-911}
@@ -37,6 +38,7 @@ if [ ${UPDATE_SERVER} -eq 1 ]; then
     +login anonymous \
     +force_install_dir ${SERVER_DIR} \
     +app_update ${STEAM_APP_ID} \
+    ${STEAM_APP_EXTRAS} \
     +quit"
 fi
 
