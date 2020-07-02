@@ -36,6 +36,7 @@ Fully working examples of different dedicated servers.
 | stable       | Ubuntu 18.04 with wine and steamcmd from binary repo.                               |
 | latest       | Ubuntu 18.04 with latest winehq STABLE packages and steamcmd. This **WILL** break.  |
 | experimental | Ubuntu 18.04 with latest winehq STAGING packages and steamcmd. This **WILL** break. |
+* Containers are automatically rebuilt weekly.
 
 ## Parameters
 
