@@ -4,7 +4,10 @@ echo steam steam/question select 'I AGREE' | debconf-set-selections && \
 dpkg --add-architecture i386 && \
 apt-get --quiet update && \
 apt-get --quiet --yes upgrade && \
+# Explicitly add SDL library: https://github.com/ValveSoftware/steam-for-linux/issues/7036
 apt-get install --yes --install-recommends \
+  libsdl2-2.0-0:i386 \
+  libsdl2-2.0-0 \
   gdb && \
 apt-get install --yes --install-recommends \
   steamcmd && \

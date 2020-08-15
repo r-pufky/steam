@@ -4,7 +4,7 @@
 
 CUSTOM=/data/custom_server
 
-set -x -e
+set -u -e
 echo '--------------------------------------'
 echo 'Propagating steam user permissions ...'
 PUID=${PUID:-911}

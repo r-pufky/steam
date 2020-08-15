@@ -5,7 +5,8 @@
 Generic Steam dedicated server using Docker.
 
 This provides a core installation of `steamcmd` to host dedicated servers. Both
-linux and windows servers can be hosted using this image.
+linux and windows servers (via [wine](winehq.org)) can be hosted using this
+image.
 
 ## How it Runs
 The docker image contains a base ubuntu install with wine (windows support) and
@@ -31,11 +32,11 @@ Fully working examples of different dedicated servers.
 
 ## Version Tags
 
-| Tag          | Description                                                                         |
-|--------------|-------------------------------------------------------------------------------------|
-| stable       | Ubuntu 18.04 with wine and steamcmd from binary repo.                               |
-| latest       | Ubuntu 18.04 with latest winehq STABLE packages and steamcmd. This **WILL** break.  |
-| experimental | Ubuntu 18.04 with latest winehq STAGING packages and steamcmd. This **WILL** break. |
+| Tag          | Description                                                                     |
+|--------------|---------------------------------------------------------------------------------|
+| stable       | Ubuntu 18.04: wine, steamcmd (package).                                         |
+| latest       | Ubuntu 18.04: winehq STABLE packages, steamcmd (package). This **WILL** break.  |
+| experimental | Ubuntu 18.04: winehq STAGING packages, steamcmd (package). This **WILL** break. |
 * Containers are automatically rebuilt weekly.
 
 ## Parameters
@@ -43,10 +44,10 @@ Fully working examples of different dedicated servers.
 | Parameter        | Function                                                                                 | Default        |
 |------------------|------------------------------------------------------------------------------------------|----------------|
 | SERVER_DIR       | Location for server files.                                                               | `/data/server` |
-| STEAM            | Location of steamcmd client.                                                             |`/steam`        |
+| STEAM            | Location of steamcmd client.                                                             | `/steam`       |
 | PLATFORM         | Platform to force specify when auto updating. `linux` or `windows`.                      | `windows`      |
 | STEAM_APP_ID     | Steam application ID for auto updating.                                                  | `0`            |
-| STEAM_APP_EXTRAS | Optional. Additional options for steam app update.                                       | ``             |
+| STEAM_APP_EXTRAS | Optional. Additional options and values for steam app update, e.g setting BETA versions. | ``             |
 | UPDATE_OS        | Update core OS on startup. `1` enable, `0` disable.                                      | `1`            |
 | UPDATE_STEAM     | Update steamcmd on startup. `1` enable, `0` disable.                                     | `1`            |
 | UPDATE_SERVER    | Update dedicated server specified by `STEAM_APP_ID` on startup. `1` enable, `0` disable. | `1`            |
@@ -65,15 +66,15 @@ for a detailed list of steam ports.
 
 | Port  | Protocol | Required? | Description             |
 |-------|----------|-----------|-------------------------|
-|`27015`| TCP      | Optional  | SRCDS RCON port.        |
 |`27015`| UDP      | Mandatory | Gameplay traffic.       |
+|`27015`| TCP      | Optional  | SRCDS RCON port.        |
 |`27016`| UDP      | Optional  | Steam announce traffic. |
 
 ## Volumes
 
-| Volume  | Function                                   |
-|---------|--------------------------------------------|
-| /data   | User data location for images.             |
+| Volume  | Function                       |
+|---------|--------------------------------|
+| /data   | User data location for images. |
 
 ## User/Group IDs
 When using data volumes (`-v` flags), permissions issues can occur between the
@@ -99,10 +100,9 @@ uid=1000(myuser) gid=1000(myuser) groups=1000(myuser),4(adm),24(cdrom),27(sudo),
 The value of `uid` (user ID) and `gid` (group ID) are the ones that you should
 be given the container.
 
-
 ## Detailed Usage Instructions
-Details how to setup a new server from scratch. See [Example Configurations](#example-configurations)
-for working examples.
+Details how to setup a new server from scratch. See
+[Example Configurations](#example-configurations) for working examples.
 
 ### docker-compose (windows dedicated server)
 ```
@@ -176,7 +176,7 @@ minimum exposure if there are vulnerabilities in the game, as well as prevent
 any permissions issues with server files.
 
 ```
-su steam -c 'your server launch command'
+su - steam -c 'your server launch command'
 ```
 
 > Your specific launch command will vary based on what server you install.
@@ -186,7 +186,7 @@ su steam -c 'your server launch command'
 This will launch a **Left 4 Dead** ``srcsd_run`` linux dedicated server.
 
 ```
-su steam -c "/data/server/srcds_run -console -game left4dead -map l4d_hospital01_apartment -port 27015 +maxplayers 4 -nohltv +exec /data/server.cfg"
+su - steam -c "/data/server/srcds_run -console -game left4dead -map l4d_hospital01_apartment -port 27015 +maxplayers 4 -nohltv +exec /data/server.cfg"
 ```
 * this example would launch a Left 4 Dead dedicated server (222840).
 
@@ -196,7 +196,7 @@ dedicated server documentation and forums for launching a dedicated windows
 server under wine for your game.
 
 ```bash
-su steam -c "xvfb-run --auto-servernum \
+su - steam -c "xvfb-run --auto-servernum \
   wine64 ${SERVER_DIR}/ConanSandbox/Binaries/Win64/ConanSandboxServer-Win64-Test.exe -nosteamclient -game -server -log"
 ```
 * This example lauches a conan exiles dedicated server (443030).
@@ -210,14 +210,14 @@ For servers that don't require saving of state between reboots, a simple bash sc
 Windows
 ```bash
 # This will run wine (for windows servers) and launch the server.
-su steam -c "xvfb-run --auto-servernum \
+su - steam -c "xvfb-run --auto-servernum \
   wine64 ${SERVER_DIR}/ConanSandbox/Binaries/Win64/ConanSandboxServer-Win64-Test.exe -nosteamclient -game -server -log"
 ```
 
 Linux
 ```bash
 # launch the dedicated linux server under the steam user.
-su steam -c "/data/server/startserver.sh \
+su - steam -c "/data/server/startserver.sh \
   -configfile=/data/server/serverconfig.xml"
 ```
 
@@ -262,7 +262,7 @@ function shutdown() {
 trap shutdown SIGINT SIGKILL SIGTERM
 
 function start_server() {
-  su steam -c "xvfb-run --auto-servernum wine64 ${SERVER_DIR}/ConanSandbox/Binaries/Win64/ConanSandboxServer-Win64-Test.exe -nosteamclient -game -server -log"
+  su - steam -c "xvfb-run --auto-servernum wine64 ${SERVER_DIR}/ConanSandbox/Binaries/Win64/ConanSandboxServer-Win64-Test.exe -nosteamclient -game -server -log"
 }
 
 function watch_server() {
@@ -313,8 +313,8 @@ patches; remember to switch to the `steam` user when executing this commands.
 
 custom_server
 ```bash
-su steam -c "winetricks dotnet472"
-su steam -c "winetricks vcrun2013"
+su - steam -c "winetricks dotnet472"
+su - steam -c "winetricks vcrun2013"
 ```
 
 ## Building
@@ -376,6 +376,20 @@ access to.
 srcds_run ... -pidfile /data/server/{GAME}.pid
 ```
 
+### Could not find `steamclient.so` or `[S_API FAIL] SteamAPI_Init() ... or a local steamclient.dll.`
+The [Steam Liunus shared libary][6h] could not be found in your path.
+
+Be sure to use `su - steam -c` to load the full steam user profile.
+
+Link to the local `steamclient.so` file, or copy it to where your server binary
+is executed. The default location is in the steam user directory:
+
+```bash
+/steam/.steam/steamcmd/linux{32,64}/steamclient.so
+```
+
+`ln -s -f /steam/.steam/steamcmd/linux32/steamclient.so /steam/.steam/sdk32/steamclient.so`
+
 ## Licensing
 Steam Logo, SteamCMD ©2019 Valve Corporation. Steam and the Steam logo are
 trademarks and/or registered trademarks of Valve Corporation in the U.S.
@@ -383,4 +397,5 @@ and/or other countries.
 
 [3n]: https://github.com/alinmear/docker-conanexiles/blob/master/src/etc/supervisor/conf.d/conanexiles.conf
 [2k]: https://docs.docker.com/compose/compose-file/#stop_grace_period
+[6h]: https://developer.valvesoftware.com/wiki/SteamCMD
 [f8]: https://raw.githubusercontent.com/r-pufky/steam/master/media/steam-icon-logo.png

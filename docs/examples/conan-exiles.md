@@ -55,7 +55,7 @@ and handling gracefully in coordination with `stop_grace_period`.
 #
 # Runs as root. Drop privileges.
 #
-# Capture kill/term signals and send SIGINT to gracefully shutdown conan server.
+# Capture kill/term signal and send SIGINT to gracefully shutdown conan server.
 PROCESS_WAIT_TIME=25
 WATCHDOG_TIME=300
 
@@ -76,7 +76,7 @@ function shutdown() {
 trap shutdown SIGINT SIGKILL SIGTERM
 
 function start_server() {
-  su steam -c "xvfb-run --auto-servernum wine64 ${SERVER_DIR}/ConanSandbox/Binaries/Win64/ConanSandboxServer-Win64-Test.exe -nosteamclient -game -server -log"
+  su - steam -c "xvfb-run --auto-servernum wine64 ${SERVER_DIR}/ConanSandbox/Binaries/Win64/ConanSandboxServer-Win64-Test.exe -nosteamclient -game -server -log"
 }
 
 function watch_server() {

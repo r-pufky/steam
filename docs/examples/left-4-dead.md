@@ -1,5 +1,5 @@
 # Left 4 Dead
-Dedicated Linux server example running Left 4 Dead with sourcemod and metamod.
+Dedicated Linux server example running Left 4 Dead with sourcemod & metamod.
 
 Assumes all files are based in `/d/games/l4d` and have
 `UID/GID` of `50510`.
@@ -58,7 +58,7 @@ directory` error.
 # Runs as root. Drop privileges.
 #
 ln -s /d/games/l4d/server.cfg /d/games/l4d/data/server/left4dead/cfg/server.cfg 2> /dev/null
-su steam -c "/data/server/srcds_run -console -game left4dead -map l4d_hospital01_apartment -port 27015 +maxplayers 4 -nohltv +exec /data/server/left4dead/cfg/server.cfg -pidfile /data/server/l4d.pid"
+su - steam -c "/data/server/srcds_run -console -game left4dead -map l4d_hospital01_apartment -port 27015 +maxplayers 4 -nohltv +exec /data/server/left4dead/cfg/server.cfg -pidfile /data/server/l4d.pid"
 ```
 
 ### Add custom server configuration.

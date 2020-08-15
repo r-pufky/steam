@@ -1,8 +1,10 @@
 # Create steam user and setup permissions.
 useradd --create --home ${STEAM} steam && \
-su steam -c " \
+su - steam -c " \
   cd ${STEAM} && \
   steamcmd +quit" && \
+mkdir -p /steam/.steam/{sdk32,sdk64} && \
+echo "\nexport PATH=\$PATH:/steam/.steam/steamcmd/linux32:/steam/.steam/steamcmd/linux64" | tee -a /steam/.profile && \
 # winehq may potentially take ~5 minutes on first boot to launch, due to
 # blocking on boot events:
 #
@@ -20,8 +22,9 @@ su steam -c " \
 #    https://ubuntuforums.org/archive/index.php/t-1499348.html
 #    https://bugs.winehq.org/show_bug.cgi?id=38653
 echo 'Updating wine, ignore any errors ...' && \
-su steam -c 'wineboot --update' /dev/null 2>&1 && \
+su - steam -c 'wineboot --update' /dev/null 2>&1 && \
 echo 'Wine update completed.' && \
 mkdir -p /data && \
 chown -R steam:steam ${STEAM} /data /docker && \
 chmod 0755 /docker/* && \
+
