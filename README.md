@@ -377,7 +377,7 @@ srcds_run ... -pidfile /data/server/{GAME}.pid
 ```
 
 ### Could not find `steamclient.so` or `[S_API FAIL] SteamAPI_Init() ... or a local steamclient.dll.`
-The [Steam Liunus shared libary][6h] could not be found in your path.
+The [Steam Linux shared library][6h] could not be found in your path.
 
 Be sure to use `su - steam -c` to load the full steam user profile.
 

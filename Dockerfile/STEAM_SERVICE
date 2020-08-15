@@ -27,4 +27,3 @@ echo 'Wine update completed.' && \
 mkdir -p /data && \
 chown -R steam:steam ${STEAM} /data /docker && \
 chmod 0755 /docker/* && \
-
