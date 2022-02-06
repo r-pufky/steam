@@ -1,22 +1,16 @@
 # Add wine
 dpkg --add-architecture i386 && \
 wget -qO - https://dl.winehq.org/wine-builds/winehq.key | apt-key add - && \
-apt-add-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ bionic main' && \
+apt-add-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ focal main' && \
 apt-get --quiet update && \
-# Wine 5.x+ requires libfaudio0, but not included on Ubuntu < 19.10.
-# https://forum.winehq.org/viewtopic.php?f=8&t=32192
-# https://askubuntu.com/questions/1100351/broken-packages-fix-problem-for-wine
 apt-get install --yes --install-recommends \
   libsdl2-2.0-0 \
   libsdl2-2.0-0:i386 \
   libc6 \
   libc6:i386 && \
-wget https://download.opensuse.org/repositories/Emulators:/Wine:/Debian/xUbuntu_18.04/amd64/libfaudio0_19.07-0~bionic_amd64.deb -O /tmp/libfaudio0_19.07-0~bionic_amd64.deb && \
-wget https://download.opensuse.org/repositories/Emulators:/Wine:/Debian/xUbuntu_18.04/i386/libfaudio0_19.07-0~bionic_i386.deb -O /tmp/libfaudio0_19.07-0~bionic_i386.deb && \
-dpkg -i /tmp/libfaudio0_19.07-0~bionic_amd64.deb /tmp/libfaudio0_19.07-0~bionic_i386.deb && \
 apt-get --quiet --yes upgrade && \
 apt-get install --yes --install-recommends \
-  lib32gcc1 \
+  lib32gcc-s1 \
   winehq-stable \
   winbind \
   supervisor \

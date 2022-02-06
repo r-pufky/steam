@@ -35,8 +35,8 @@ if [ ${UPDATE_SERVER} -eq 1 ]; then
   echo "Updating app ${STEAM_APP_ID} ..."
   su steam -c "steamcmd \
     +@sSteamCmdForcePlatformType ${PLATFORM} \
-    +login anonymous \
     +force_install_dir ${SERVER_DIR} \
+    +login anonymous \
     +app_update ${STEAM_APP_ID} \
     ${STEAM_APP_EXTRAS} \
     +quit"

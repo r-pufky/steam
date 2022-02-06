@@ -3,7 +3,7 @@ dpkg --add-architecture i386 && \
 apt-get --quiet update && \
 apt-get --quiet --yes upgrade && \
 apt-get install --yes --install-recommends \
-  lib32gcc1 \
+  lib32gcc-s1 \
   wine-stable \
   wine32 \
   wine64 \
