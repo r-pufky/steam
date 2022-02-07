@@ -64,7 +64,6 @@ su - steam -c "/data/server/srcds_run -console -game left4dead2 -map c1m1_hotel 
 `/d/games/l4d2/server.cfg`
 ``` ini
 hostname                    "{NAME}"
-sv_password                 "{PASS}"
 sv_allow_lobby_connect_only 0
 sv_steamgroup_exclusive     0
 sv_gametypes                "coop,survival,versus,teamversus"
@@ -77,7 +76,7 @@ sv_rcon_minfailuretime      600
 
 // General Play
 motd_enabled          1
-mp_disable_autokick   1    
+mp_disable_autokick   1
 sv_allow_wait_command 0
 sv_alltalk            0
 sv_alternateticks     0

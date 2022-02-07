@@ -78,7 +78,7 @@ sv_rcon_minfailuretime      600
 
 // General Play
 motd_enabled          1
-mp_disable_autokick   1    
+mp_disable_autokick   1
 sv_allow_wait_command 0
 sv_alltalk            0
 sv_alternateticks     0

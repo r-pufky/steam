@@ -186,7 +186,7 @@ su - steam -c 'your server launch command'
 This will launch a **Left 4 Dead** ``srcsd_run`` linux dedicated server.
 
 ```
-su - steam -c "/data/server/srcds_run -console -game left4dead -map l4d_hospital01_apartment -port 27015 +maxplayers 4 -nohltv +exec /data/server.cfg"
+su - steam -c "/data/server/srcds_run -console -game left4dead -map l4d_hospital01_apartment -port 27015 +maxplayers 4 -nohltv +exec server.cfg"
 ```
 * this example would launch a Left 4 Dead dedicated server (222840).
 
