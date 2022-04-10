@@ -2,6 +2,15 @@
 
 > This is **NOT** an official Valve steam docker container.
 
+:warning:
+
+I have moved from Docker to other container solutions a few years ago and will
+no longer be maintaining docker images. The container auto-updates on boot, so
+it should continue to work until the next major Ubuntu release. Please fork and
+update as needed to continue use.
+
+:warning:
+
 Generic Steam dedicated server using Docker.
 
 This provides a core installation of `steamcmd` to host dedicated servers. Both
